@@ -92,7 +92,7 @@ module.exports = function (ajv) {
                         var _data = ((schema[_method].$data)
                             ? it.util.getData(schema[_method].$data, it.dataLevel, it.dataPathArr)
                             : "\"" + schema[_method] + "\"");
-                        out = Function("inst", "path", "parent", "prop_name", "data", "if(this.semver.validRange(" + _data + ",this.loose)===null){return false;}if(this.semver.validRange(inst,this.loose)===null){return false;};return this.semver." + _method + "(inst," + _data + ",this.loose  );");
+                        out = Function("inst", "path", "parent", "prop_name", "data", "inst = this.semver.coerce(inst).version;if(this.semver.validRange(" + _data + ",this.loose)===null){return false;}if(this.semver.validRange(inst,this.loose)===null){return false;};return this.semver." + _method + "(inst," + _data + ",this.loose  );");
                     }
                     break;
                 default: {
@@ -130,7 +130,7 @@ module.exports = function (ajv) {
                         valid: { type: "boolean" },
                         validRange: { type: "boolean" },
                         prerelease: { type: "boolean" },
-                        loose: { type: "boolean" },
+                        loose: { type: "boolean" }
                     },
                     oneOf: [
                         { required: ["major"] },
@@ -149,7 +149,7 @@ module.exports = function (ajv) {
                         { required: ["gtr"] },
                         { required: ["valid"] },
                         { required: ["prerelease"] },
-                    ],
+                    ]
                 },
             ],
             bool_or_ref: {
@@ -161,7 +161,7 @@ module.exports = function (ajv) {
                             "$data": { type: "string" }
                         },
                         required: ["$data"],
-                        maxProperties: 1,
+                        maxProperties: 1
                     },
                 ]
             },
@@ -174,7 +174,7 @@ module.exports = function (ajv) {
                             "$data": { type: "string" }
                         },
                         required: ["$data"],
-                        maxProperties: 1,
+                        maxProperties: 1
                     },
                 ]
             }

@@ -57,7 +57,7 @@ export = function(ajv: Ajv){
 				throw new Error("Schema Error: this should be prevented by the metaSchema. Got schema:"+ JSON.stringify(schema))
 			}
 
-			var out; 
+			var out;
 
 			switch(_method) {
 				case "major":
@@ -96,7 +96,7 @@ export = function(ajv: Ajv){
 							   "parent",
 							   "prop_name",
 							   "data",
-							   `if(this.semver.validRange(${_data},this.loose)===null){return false;}if(this.semver.validRange(inst,this.loose)===null){return false;};return this.semver.${_method}(inst,${_data},this.loose  );`);
+							   `inst = this.semver.coerce(inst).version;if(this.semver.validRange(${_data},this.loose)===null){return false;}if(this.semver.validRange(inst,this.loose)===null){return false;};return this.semver.${_method}(inst,${_data},this.loose  );`);
 				}break;
 				default:{
 					// RELATIONAL KEYWORDS
@@ -194,8 +194,8 @@ export = function(ajv: Ajv){
 	});
 };
 
-type semver_method = 
-	"major"| "minor"| "patch"| "clean"| 
+type semver_method =
+	"major"| "minor"| "patch"| "clean"|
 	"satisfies"| "gt"| "gte"| "lt"| "lte"| "eq"| "neq"| "ltr"| "gtr";
 
 
@@ -222,4 +222,3 @@ interface semver_schema {
 	prerelease?: boolean;
 	loose?: boolean;
 }
-
